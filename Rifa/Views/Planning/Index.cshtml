@@ -1,0 +1,323 @@
+﻿@{
+    ViewData["Title"] = "Planning";
+}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+    <h3 class="mb-0">Daftar Perencanaan Produksi</h3>
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+        Tambah Planning
+    </button>
+</div>
+
+<div id="alertBox"></div>
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>Kode</th>
+            <th>Operator</th>
+            <th>Total</th>
+            <th class="text-end">Create Date</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Aksi</th>
+        </tr>
+    </thead>
+    <tbody id="planningTable">
+        <tr><td colspan="6" class="text-center">Loading...</td></tr>
+    </tbody>
+</table>
+
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Planning</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formPlanning">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Operator</label>
+                        <input type="text" id="empNm" class="form-control form-control-sm" placeholder="Contoh: Asep" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Senin</label>
+                            <input type="number" id="senin" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Selasa</label>
+                            <input type="number" id="selasa" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Rabu</label>
+                            <input type="number" id="rabu" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Kamis</label>
+                            <input type="number" id="kamis" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Jumat</label>
+                            <input type="number" id="jumat" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Sabtu</label>
+                            <input type="number" id="sabtu" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Minggu</label>
+                            <input type="number" id="minggu" min="0" class="form-control form-control-sm" value="0" required />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" form="formPlanning" class="btn btn-sm btn-primary">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Planning</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2"><b>Kode:</b> <span id="resPlanningCd"></span></p>
+                <p class="mb-3"><b>Operator:</b> <span id="resEmpNm"></span></p>
+
+                <h6>Rencana</h6>
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Senin</th>
+                            <th>Selasa</th>
+                            <th>Rabu</th>
+                            <th>Kamis</th>
+                            <th>Jumat</th>
+                            <th>Sabtu</th>
+                            <th>Minggu</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="rSenin"></td>
+                            <td id="rSelasa"></td>
+                            <td id="rRabu"></td>
+                            <td id="rKamis"></td>
+                            <td id="rJumat"></td>
+                            <td id="rSabtu"></td>
+                            <td id="rMinggu"></td>
+                            <td><b id="rTotal"></b></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h6 class="mt-3">Rekomendasi</h6>
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Senin</th>
+                            <th>Selasa</th>
+                            <th>Rabu</th>
+                            <th>Kamis</th>
+                            <th>Jumat</th>
+                            <th>Sabtu</th>
+                            <th>Minggu</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="hSenin"></td>
+                            <td id="hSelasa"></td>
+                            <td id="hRabu"></td>
+                            <td id="hKamis"></td>
+                            <td id="hJumat"></td>
+                            <td id="hSabtu"></td>
+                            <td id="hMinggu"></td>
+                            <td><b id="hTotal"></b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Status</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3"><b>Kode:</b> <span id="editPlanningCd"></span></p>
+
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select id="editIsActive" class="form-select form-select-sm">
+                        <option value="true">Aktif</option>
+                        <option value="false">Non Aktif</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-sm btn-primary" onclick="simpanStatus()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadHistory() {
+            fetch('/Planning/GetHistory')
+                .then(res => res.json())
+                .then(data => {
+                    var tbody = document.getElementById('planningTable');
+                    tbody.innerHTML = '';
+
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="text-center">Belum ada data</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(function (item) {
+                        var status = item.isActive
+                            ? '<span class="badge bg-success">Aktif</span>'
+                            : '<span class="badge bg-secondary">Non Aktif</span>';
+
+                        tbody.innerHTML += `<tr>
+                            <td>${item.planningCd}</td>
+                            <td>${item.empNm}</td>
+                            <td>${item.total}</td>
+                            <td class="text-end">${item.createdAt}</td>
+                            <td class="text-center">${status}</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info" onclick="lihatDetail('${item.planningCd}')" title="Detail">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-warning" onclick="bukaEdit('${item.planningCd}', ${item.isActive})" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+                });
+        }
+
+        loadHistory();
+
+        document.getElementById('formPlanning').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                empNm: document.getElementById('empNm').value,
+                senin: parseInt(document.getElementById('senin').value) || 0,
+                selasa: parseInt(document.getElementById('selasa').value) || 0,
+                rabu: parseInt(document.getElementById('rabu').value) || 0,
+                kamis: parseInt(document.getElementById('kamis').value) || 0,
+                jumat: parseInt(document.getElementById('jumat').value) || 0,
+                sabtu: parseInt(document.getElementById('sabtu').value) || 0,
+                minggu: parseInt(document.getElementById('minggu').value) || 0
+            };
+
+            fetch('/Planning/Result', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (!res.success) {
+                    document.getElementById('alertBox').innerHTML =
+                        '<div class="alert alert-danger py-2">' + res.message + '</div>';
+                    return;
+                }
+
+                document.getElementById('alertBox').innerHTML =
+                    '<div class="alert alert-success py-2">Data berhasil disimpan.</div>';
+
+                bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+                document.getElementById('formPlanning').reset();
+                loadHistory();
+            });
+        });
+
+        function lihatDetail(planningCd) {
+            fetch('/Planning/GetDetail?id=' + planningCd)
+                .then(res => res.json())
+                .then(res => {
+                    if (!res.success) {
+                        alert(res.message);
+                        return;
+                    }
+
+                    document.getElementById('resPlanningCd').textContent = res.planningCd;
+                    document.getElementById('resEmpNm').textContent = res.empNm;
+
+                    document.getElementById('rSenin').textContent = res.rencanaSenin;
+                    document.getElementById('rSelasa').textContent = res.rencanaSelasa;
+                    document.getElementById('rRabu').textContent = res.rencanaRabu;
+                    document.getElementById('rKamis').textContent = res.rencanaKamis;
+                    document.getElementById('rJumat').textContent = res.rencanaJumat;
+                    document.getElementById('rSabtu').textContent = res.rencanaSabtu;
+                    document.getElementById('rMinggu').textContent = res.rencanaMinggu;
+                    document.getElementById('rTotal').textContent = res.total;
+
+                    document.getElementById('hSenin').textContent = res.hasilSenin;
+                    document.getElementById('hSelasa').textContent = res.hasilSelasa;
+                    document.getElementById('hRabu').textContent = res.hasilRabu;
+                    document.getElementById('hKamis').textContent = res.hasilKamis;
+                    document.getElementById('hJumat').textContent = res.hasilJumat;
+                    document.getElementById('hSabtu').textContent = res.hasilSabtu;
+                    document.getElementById('hMinggu').textContent = res.hasilMinggu;
+                    document.getElementById('hTotal').textContent = res.total;
+
+                    new bootstrap.Modal(document.getElementById('detailModal')).show();
+                });
+        }
+
+        function bukaEdit(planningCd, isActive) {
+            document.getElementById('editPlanningCd').textContent = planningCd;
+            document.getElementById('editIsActive').value = isActive.toString();
+
+            new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+
+        function simpanStatus() {
+            var planningCd = document.getElementById('editPlanningCd').textContent;
+            var isActive = document.getElementById('editIsActive').value === 'true';
+
+            fetch('/Planning/UpdateStatus?id=' + planningCd + '&isActive=' + isActive, {
+                method: 'POST'
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    document.getElementById('alertBox').innerHTML =
+                        '<div class="alert alert-success py-2">Status berhasil diupdate.</div>';
+
+                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                    loadHistory();
+                } else {
+                    document.getElementById('alertBox').innerHTML =
+                        '<div class="alert alert-danger py-2">' + res.message + '</div>';
+                }
+            });
+        }
+    </script>
+}
